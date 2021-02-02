@@ -1,0 +1,8 @@
+2 {"2":1}
+Initialization Complete
+2 {"2":2}
+INFO Inicializado 2
+2 {"2":3}
+INFO localhost:40000Activo
+2 {"2":4}
+INFO Lista enviada a localhost:40000
