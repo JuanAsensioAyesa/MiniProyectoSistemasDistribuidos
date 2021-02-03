@@ -1,0 +1,24 @@
+0 {"0":1}
+Initialization Complete
+0 {"0":2}
+INFO Inicializado 0
+0 {"0":3}
+INFO localhost:40000Activo
+0 {"0":4}
+INFO localhost:50000Activo
+0 {"0":5}
+INFO Lista enviada a localhost:40000
+0 {"0":6}
+INFO Lista enviada a localhost:50000
+0 {"0":7, "2":4}
+INFO Recibida lista de 2
+0 {"0":8, "2":4}
+INFO Mensaje enviado a localhost:50000
+0 {"2":4, "1":4, "0":9}
+INFO Recibida lista de 1
+0 {"2":4, "1":4, "0":10}
+INFO Mensaje enviado a localhost:40000
+0 {"0":11, "2":4, "1":7}
+INFO Recibido evento t=6 trans=0 cte=1
+0 {"0":12, "2":7, "1":7}
+INFO Recibido evento t=1 trans=0 cte=1

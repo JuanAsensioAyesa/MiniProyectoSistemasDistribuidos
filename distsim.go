@@ -7,7 +7,7 @@ package main
 
 import (
 	"centralsim"
-	"os"
+	//"os"
 	"comm_vector"	
 	//"net"
 	"time"
@@ -58,12 +58,14 @@ func CheckObjetivo(L *centralsim.TransitionList,S *centralsim.SimulationEngine)(
 	//I := make([]centralsim.IndLocalTrans,1);
 	for _,trans := range lefs.IaRed{
 		if (trans.Ib_de_salida){
+			//fmt.Println("DE SALIDA")
 			//Los eventos generados estan en otra subred
 			for _,elem := range trans.TransConstPul{
 				trans2:= elem[0]; //Transicion objetivo
 				if (trans2 < 0 ){
 					trans2 = -1 * (int(trans2)+1);
 				}
+				
 				found := Esta(L,centralsim.IndLocalTrans(trans2));
 				if (found){
 					I = append(I,centralsim.IndLocalTrans(trans2));
@@ -81,22 +83,14 @@ func CheckObjetivo(L *centralsim.TransitionList,S *centralsim.SimulationEngine)(
 func TiempoTotal(L centralsim.TransitionList)(int){
 	acum:=0;
 	for _,trans := range L {
-		acum += int(trans.IiTiempo);
+		acum += int(trans.IiDuracionDisparo);
+		
 	}
+	
 	return acum;
 }
 
 
-func prueba_Enviar_lista(){
-	C := comm_vector.Communicator{};
-	C.Init("localhost","40000","Test-1",1);
-	C.Init_Receive();
-	var Msg_received comm_vector.Msg_List;
-	var received centralsim.TransitionList;
-	Msg_received = C.Receive_List();
-	received = Msg_received.L;
-	fmt.Println(len(received));
-}
 /*
 	Elimina de un slice el indice s
 */
@@ -135,11 +129,14 @@ func sincronizar(C * comm_vector.Communicator,IPs []string){
 	dic[Transition_id] = ip_maquina_encargada
 */
 func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector.Communicator,IPs []string)(int,map[centralsim.IndLocalTrans]string,map[string]chan comm_vector.Msg){
-	IPs = remove(IPs,C.Id);
+	//IPs = remove(IPs,C.Id);
+	//fmt.Println(C.Id,IPs);
 	lefs := ms.GetLefs();
 	//Enviamos transiciones a todos
-	for _,ip := range IPs{
-		C.Send_List(ip,lefs.IaRed_AUX);
+	for i,ip := range IPs{
+		if i!=C.Id{
+			C.Send_List(ip,lefs.IaRed_AUX);
+		}
 	}
 	var received comm_vector.Msg_List;
 	mapa := make(map[centralsim.IndLocalTrans]string);
@@ -154,12 +151,13 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 		El tiempo del evento será el tiempo total que toman la ejecucion de tus transiciones
 	*/
 	var E centralsim.Event;
-	for i:=0 ;i<len(IPs);i++{
+	for i:=0 ;i<len(IPs)-1;i++{
 		received = C.Receive_List()
 		CrearDic(&received.L,received.IP,&mapa);
 		
-		
+		//fmt.Println(C.Id,mapa)
 		lista := CheckObjetivo(&received.L,ms);
+		//fmt.Println(C.Id,lista)
 		objetivo := len(lista)
 		E.SetCte(centralsim.TypeConst(objetivo));
 		TtotalLocal := TiempoTotal(lefs.IaRed_AUX);
@@ -176,10 +174,10 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 		Si es un canal de entrada anotas el tiempo de su ejecucion para calcular despues el max
 		Ademas aniades un canal para ese proceso en el diccionario de canales
 	*/
-	for i:=0 ;i<len(IPs);i++{
+	for i:=0 ;i<len(IPs)-1;i++{
 		Msg_E = C.Receive();
 		E := Msg_E.Evento;
-		if (E.IiCte > 0 ){
+		if (int(E.IiCte) > 0 ){
 			canales_entrada++;
 			chan_aux := make(chan comm_vector.Msg,1)
 			chan_map[Msg_E.IP] = chan_aux;
@@ -221,26 +219,43 @@ func Simulador(IPs []string,filename string,id int){
 	//Obtenemos los lookahead
 	//lookahead[0]->Si la subnet tiene el token
 	//lookahead[1]->Si la subnet no tiene el token
-	obtener_Incremento_lookAhead(&ms,&C,IPs);
+	lookahead,mapa_trans,mapa_chan := obtener_Incremento_lookAhead(&ms,&C,IPs);
 
+
+	time.Sleep(time.Duration(C.Id) * 200 * time.Millisecond);
+	fmt.Println(C.Id);
+	fmt.Println("=====================")
+	fmt.Println("Mi lookahead cuando no tengo token: ",lookahead);
+	for trans_id,ip := range mapa_trans{
+		fmt.Println("Transicion ",trans_id," en ",ip)
+	}
+	fmt.Println("Canales de salida: ");
+	for key,_ := range mapa_chan{
+		fmt.Println(key);
+	}
+
+
+	//fmt.Printf(filename,lookahead);
+	//fmt.Printf(filename,mapa_trans);
+	//fmt.Printf(filename,mapa_chan);
+}
+
+func Init(IPs []string,filename string,id int){
+	Simulador(IPs,filename,id);
+	time.Sleep(1000 * time.Millisecond);
 }
 func main() {
 	// cargamos un fichero de estructura Lef en formato json para centralizado
 	// os.Args[0] es el nombre del programa que no nos interesa
-	lefs, err := centralsim.Load(os.Args[1]);
-	if err != nil {
-		println("Couln't load the Petri Net file !")
+	IPs := []string{"localhost:30000","localhost:40000","localhost:50000"};
+	subredes := "./testdata/3subredes.subred";
+	for i,_ := range IPs{
+		filename := subredes+strconv.Itoa(i)+".json";
+		if i != len(IPs)-1 {
+			go Init(IPs,filename,i);
+		}else{
+			Init(IPs,filename,i)
+		}
 	}
-	
-	Lista := lefs.IaRed_AUX;
-
-	go prueba_Enviar_lista();
-
-	C := comm_vector.Communicator{};
-	C.Init("localhost","50000","Test-2",2);
-	C.Try("localhost:40000");
-	C.Send_List("localhost:40000",Lista);
-
-	time.Sleep(1000 * time.Millisecond);
 	
 }

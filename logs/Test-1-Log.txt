@@ -1,8 +1,0 @@
-1 {"1":1}
-Initialization Complete
-1 {"1":2}
-INFO Inicializado 1
-1 {"1":3}
-INFO Iniciado Receive en 1
-1 {"1":4, "2":4}
-INFO Recibida lista de 2
