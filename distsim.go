@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"strings"
 	"strconv"
+	"sort"
 )
 /*
 	Dado una lista de transiciones devuelve un diccionario 
@@ -193,6 +194,53 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 	return lookahead,mapa,chan_map;
 }
 
+
+
+/*
+	Calcula el incremento de lookahead cuando la subred tenga alguna transicion
+	sensibilizada (haya token),el lookahead se calculara como el sumatorio
+	de tiempos de transiciones desde la ultima transicion sensibilizada hasta
+	la transicion de salida
+*/
+func Lookahead_Token(ms *centralsim.SimulationEngine)(int){
+	var acum int;
+	lefs:=ms.GetLefs();
+	if lefs.HaySensibilizadas(){
+		TransMap := lefs.IaRed;
+		keys := make([]int,len(TransMap));
+		for key := range TransMap{
+			keys = append(keys,int(key));
+		}
+		sort.Ints(keys);
+		found := false; //Encontrada la transicion sensibilizada
+		i:= 0 ;
+		for !found{
+			found = TransMap[centralsim.IndLocalTrans(keys[i])].IiValorLef <=0;
+			if !found{
+				i++;
+			}
+		}	
+		//i es el indice de la primera transicion sensibilizada
+		//Inicializamos el acumulador de tiempo a 0
+		acum = 0 ;
+		salida := TransMap[centralsim.IndLocalTrans(keys[i])].Ib_de_salida;
+		for !salida{
+			transicion := TransMap[centralsim.IndLocalTrans(keys[i])]
+			if transicion.IiValorLef <=0{
+				acum = 0 ;
+			}
+			//acum += int(transicion)
+		}
+
+	
+
+	}else{
+		fmt.Println("NO HAY SENSIBILIZADAS EN LOOKAHEAD TOKEN");
+		acum = -1;
+	}
+	return acum;
+
+}
 /*
 	IPs -> slice con las IP de TODOS los procesos
 	filename_json -> Nombre del fichero json a cargar
