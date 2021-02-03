@@ -193,7 +193,16 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 	lookahead:= max + TiempoTotal(lefs.IaRed_AUX);
 	return lookahead,mapa,chan_map;
 }
-
+//Devuelve el menor valor del slice
+func min(slice[]int)(int){
+	aux:=slice[0];
+	for _,elem := range slice{
+		if elem < aux{
+			aux = elem;
+		}
+	}
+	return aux;
+}
 
 
 /*
@@ -205,6 +214,7 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 func Lookahead_Token(ms *centralsim.SimulationEngine)(int){
 	var acum int;
 	lefs:=ms.GetLefs();
+	lefs.ActualizaSensibilizadas(0);
 	if lefs.HaySensibilizadas(){
 		TransMap := lefs.IaRed;
 		keys := make([]int,len(TransMap));
@@ -222,14 +232,33 @@ func Lookahead_Token(ms *centralsim.SimulationEngine)(int){
 		}	
 		//i es el indice de la primera transicion sensibilizada
 		//Inicializamos el acumulador de tiempo a 0
-		acum = 0 ;
+		acum = int(TransMap[centralsim.IndLocalTrans(keys[i])].IiDuracionDisparo) ;
 		salida := TransMap[centralsim.IndLocalTrans(keys[i])].Ib_de_salida;
+		indice:=keys[i];
 		for !salida{
-			transicion := TransMap[centralsim.IndLocalTrans(keys[i])]
+			transicion := TransMap[centralsim.IndLocalTrans(indice)]
+			salida = transicion.Ib_de_salida;
+			
+			//Si esta sensibilizada se vuelve a empezar
 			if transicion.IiValorLef <=0{
 				acum = 0 ;
 			}
-			//acum += int(transicion)
+
+			//Aumentamos tiempo
+			acum += int(transicion.IiDuracionDisparo);
+
+			if !salida{
+				trans_obj := transicion.TransConstPul;
+				//Esto no deberia pasar en este problema
+				if len(trans_obj) > 1{
+					fmt.Println("MAS DE UNA TRANSICION OBJETIVO");
+				}
+				T_siguiente := trans_obj[0];
+				indice = T_siguiente[0];
+
+			}
+
+			
 		}
 
 	
@@ -280,6 +309,9 @@ func Simulador(IPs []string,filename string,id int){
 	fmt.Println("Canales de salida: ");
 	for key,_ := range mapa_chan{
 		fmt.Println(key);
+	}
+	if C.Id == 0{
+		fmt.Println("Mi lookahead cuando tengo token",Lookahead_Token(&ms));
 	}
 
 

@@ -16,7 +16,7 @@ INFO Mensaje enviado a localhost:30000
 INFO Recibida lista de 2
 1 {"1":9, "0":5, "2":5}
 INFO Mensaje enviado a localhost:50000
-1 {"0":8, "2":5, "1":10}
-INFO Recibido evento t=2 trans=0 cte=1
-1 {"1":11, "0":8, "2":7}
+1 {"1":10, "0":8, "2":5}
+INFO Recibido evento t=1 trans=0 cte=1
+1 {"2":9, "1":11, "0":8}
 INFO Recibido evento t=1 trans=0 cte=0
