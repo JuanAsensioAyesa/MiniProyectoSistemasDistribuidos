@@ -276,6 +276,40 @@ func Lookahead_Token(ms *centralsim.SimulationEngine)(int){
 
 }
 /*
+	Comprueba si hay al menos un mensaje en el buffer de cada 
+	canal
+*/
+func hay_uno(M *map[string]chan comm_vector.Msg)(bool){
+	aux:= true;
+	for _,channel := range *M{
+		if aux{
+			aux = len(channel) >0;
+		}
+	}
+	return aux;
+}
+/*
+	Recibe mensaje y lo envia al canal correspondiente
+*/
+func Recibir_Mensajes(C *comm_vector.Communicator,M *map[string]chan comm_vector.Msg){
+	for !hay_uno(M){
+		received := C.Receive();
+		(*M)[received.IP]<-received
+	}
+}
+/*
+	Recibe los eventos de los canales
+*/
+func sacarEventos(M *map[string]chan comm_vector.Msg)([]centralsim.Event){
+	var aux []centralsim.Event;
+	for _,channel := range *M{
+		msg := <-channel;
+		aux = append(aux,msg.Evento);
+	}
+	return aux;
+
+}
+/*
 	IPs -> slice con las IP de TODOS los procesos
 	filename_json -> Nombre del fichero json a cargar
 	id -> id del proceso, corresponde al indice de la IP del proceso en IPs
@@ -323,6 +357,19 @@ func Simulador(IPs []string,filename string,id int){
 		fmt.Println("Mi lookahead cuando tengo token",Lookahead_Token(&ms));
 	}
 
+	/*
+		Actualizar sensibilizadas
+		for
+			Enviar lookahead
+				-Comprobar que lookahead te toca
+				-Enviar a todos los canales de salida
+			Recibir lookaheads
+			Procesar Eventos
+			Simular lo correspondiente
+		
+	*/
+	Recibir_Mensajes(&C,&mapa_chan_entrada);
+	Eventos_recibidos := sacarEventos(&mapa_chan_entrada);
 
 	//fmt.Printf(filename,lookahead);
 	//fmt.Printf(filename,mapa_trans);
