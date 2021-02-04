@@ -129,7 +129,7 @@ func sincronizar(C * comm_vector.Communicator,IPs []string){
 	//Además se crea un diccionario tal que 
 	dic[Transition_id] = ip_maquina_encargada
 */
-func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector.Communicator,IPs []string)(int,map[centralsim.IndLocalTrans]string,map[string]chan comm_vector.Msg){
+func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector.Communicator,IPs []string)(int,map[centralsim.IndLocalTrans]string,map[string]chan comm_vector.Msg,map[string]chan comm_vector.Msg){
 	//IPs = remove(IPs,C.Id);
 	//fmt.Println(C.Id,IPs);
 	lefs := ms.GetLefs();
@@ -152,6 +152,7 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 		El tiempo del evento será el tiempo total que toman la ejecucion de tus transiciones
 	*/
 	var E centralsim.Event;
+	chan_map_salida := make(map[string]chan comm_vector.Msg );
 	for i:=0 ;i<len(IPs)-1;i++{
 		received = C.Receive_List()
 		CrearDic(&received.L,received.IP,&mapa);
@@ -161,6 +162,10 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 		//fmt.Println(C.Id,lista)
 		objetivo := len(lista)
 		E.SetCte(centralsim.TypeConst(objetivo));
+		if objetivo > 0 {
+			chan_aux := make(chan comm_vector.Msg,1)
+			chan_map_salida[received.IP] = chan_aux;
+		}
 		TtotalLocal := TiempoTotal(lefs.IaRed_AUX);
 		E.SetTiempo(centralsim.TypeClock(TtotalLocal));
 		C.Send(received.IP,E);
@@ -169,7 +174,7 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 	var L_suma []int;
 	canales_entrada := 0 ;
 	var Msg_E comm_vector.Msg;
-	chan_map := make(map[string]chan comm_vector.Msg );
+	chan_map_entrada := make(map[string]chan comm_vector.Msg );
 	/*
 		Recibes la respuesta de todos los procesos
 		Si es un canal de entrada anotas el tiempo de su ejecucion para calcular despues el max
@@ -181,7 +186,7 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 		if (int(E.IiCte) > 0 ){
 			canales_entrada++;
 			chan_aux := make(chan comm_vector.Msg,1)
-			chan_map[Msg_E.IP] = chan_aux;
+			chan_map_entrada[Msg_E.IP] = chan_aux;
 			L_suma = append(L_suma,int(E.IiTiempo));
 		}
 	}
@@ -191,7 +196,7 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 	*/
 	max := max(L_suma);
 	lookahead:= max + TiempoTotal(lefs.IaRed_AUX);
-	return lookahead,mapa,chan_map;
+	return lookahead,mapa,chan_map_entrada,chan_map_salida;
 }
 //Devuelve el menor valor del slice
 func min(slice[]int)(int){
@@ -296,7 +301,7 @@ func Simulador(IPs []string,filename string,id int){
 	//Obtenemos los lookahead
 	//lookahead[0]->Si la subnet tiene el token
 	//lookahead[1]->Si la subnet no tiene el token
-	lookahead,mapa_trans,mapa_chan := obtener_Incremento_lookAhead(&ms,&C,IPs);
+	lookahead,mapa_trans,mapa_chan_entrada,mapa_chan_salida := obtener_Incremento_lookAhead(&ms,&C,IPs);
 
 
 	time.Sleep(time.Duration(C.Id) * 200 * time.Millisecond);
@@ -307,7 +312,11 @@ func Simulador(IPs []string,filename string,id int){
 		fmt.Println("Transicion ",trans_id," en ",ip)
 	}
 	fmt.Println("Canales de salida: ");
-	for key,_ := range mapa_chan{
+	for key,_ := range mapa_chan_salida{
+		fmt.Println(key);
+	}
+	fmt.Println("Canales de entrada: ");
+	for key,_ := range mapa_chan_entrada{
 		fmt.Println(key);
 	}
 	if C.Id == 0{
