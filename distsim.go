@@ -344,6 +344,7 @@ func Enviar_Eventos(ms*centralsim.SimulationEngine,L []centralsim.Event,C *comm_
 	var enviados []string; //Ip de las subredes a las que se ha enviado un evento
 	var EventoAux centralsim.Event;
 	for _,event := range L{
+		
 		ip_Destino := M[event.IiTransicion];
 		event.IsNull = false;
 		C.Send(ip_Destino,event);
@@ -360,7 +361,7 @@ func Enviar_Eventos(ms*centralsim.SimulationEngine,L []centralsim.Event,C *comm_
 			}else{
 				lookahead = lookahead_no_token;
 			}
-			EventoAux = centralsim.Event{ms.GetLocalTime() + centralsim.TypeClock(lookahead),get_Trans_from_Host(M,IP_salida),0,true};
+			EventoAux = centralsim.Event{ms.GetLocalTime() + centralsim.TypeClock(lookahead),get_Trans_from_Host(M,IP_salida),0,true,false};
 			C.Send(IP_salida,EventoAux);
 		}
 	}
@@ -402,7 +403,7 @@ func tratar_eventos(L *[]centralsim.Event){
 	filename_json -> Nombre del fichero json a cargar
 	id -> id del proceso, corresponde al indice de la IP del proceso en IPs
 */
-func Simulador(IPs []string,filename string,id int){
+func Simulador(IPs []string,filename string,id int,CicloFinal int){
 	//Creamos el objeto communicator
 	C:=comm_vector.Communicator{};
 	puerto:=strings.Split(IPs[id],":")[1]
@@ -461,7 +462,7 @@ func Simulador(IPs []string,filename string,id int){
 			Simular lo correspondiente
 		
 	*/
-	ms.ActualizaSensibilizadas(0);
+	//ms.ActualizaSensibilizadas(0);
 	fin :=false;
 	var recibidos []centralsim.Event;
 	Enviar_Eventos(&ms,recibidos,&C,mapa_trans,lookahead_no_token,IPs_salida);
@@ -476,6 +477,10 @@ func Simulador(IPs []string,filename string,id int){
 		fmt.Println(C.Id);
 		fmt.Println("=======================")
 		for _,evento := range Eventos_recibidos{
+			if evento.IsEnd{
+				fin = true;
+				break;
+			}
 			if evento.IsNull{
 				fmt.Println("Recibido evento NULL T=",evento.IiTiempo);
 			}else{
@@ -483,59 +488,71 @@ func Simulador(IPs []string,filename string,id int){
 				fmt.Println("NO NULL T =%d Trans = %d",evento.IiTiempo,evento.IiTransicion);
 			}
 		}
-		min_ahead := obtener_min_lookahead(Eventos_recibidos);
-		max_time := centralsim.TypeClock(-1);
-		for _,evento := range Eventos_recibidos{
+		if !fin{
+			min_ahead := obtener_min_lookahead(Eventos_recibidos);
+			max_time := centralsim.TypeClock(-1);
+			for _,evento := range Eventos_recibidos{
 
-			if !evento.IsNull{
-				//No es null,se aniade
-				if evento.IiTiempo > max_time{
-					max_time = evento.IiTiempo;
+				if !evento.IsNull{
+					//No es null,se aniade
+					if evento.IiTiempo > max_time{
+						max_time = evento.IiTiempo;
+					}
+					ms.AniadeEvento(evento);
 				}
-				ms.AniadeEvento(evento);
+
 			}
+			//Simulacion local
+			if min_ahead == -1{
+				//No hay evento null
+				//if C.Id == 0 {
+					ms.SimularPeriodo(ms.GetLocalTime(),max_time);
+				//}
+			}else{
+				//Hay que avanzar hasta el min lookahead
+				//Si no hay eventos simplemente no hara nada, solo avanzar el reloj
+				//if C.Id == 0 {
+					ms.SimularPeriodo(ms.GetLocalTime(),ms.GetLocalTime() + min_ahead);
+				//}
+			}
+			
 
+			//LOG
+			
+			lista_aux := []centralsim.Event(ms.ListaEventosFuera);
+			tratar_eventos(&lista_aux);
+			time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
+			fmt.Println("ID = ",C.Id);
+			fmt.Println("EVENTOS GENERADOS ",len(ms.ListaEventosFuera));
+			fmt.Println("=================")
+
+			for _,evento := range lista_aux{
+				fmt.Println("Evento Trans = ",evento.IiTransicion);
+			}
+			
+			//Enviar eventos afuera
+
+			Enviar_Eventos(&ms,lista_aux,&C,mapa_trans,lookahead_no_token,IPs_salida);
+			var aux centralsim.EventList;
+			ms.ListaEventosFuera = aux; //vaciamos
+			//fin = true;
+			if int(ms.GetLocalTime()) >= CicloFinal{
+				fin = true;
+				EventoAux :=centralsim.Event{0,0,0,false,true};
+				for _,IP := range IPs{
+					C.Send(IP,EventoAux);
+				}
+			}
 		}
-		//Simulacion local
-		if min_ahead == -1{
-			//No hay evento null
-			ms.SimularPeriodo(ms.GetLocalTime(),max_time);
-		}else{
-			//Hay que avanzar hasta el min lookahead
-			//Si no hay eventos simplemente no hara nada, solo avanzar el reloj
-			ms.SimularPeriodo(ms.GetLocalTime(),ms.GetLocalTime() + min_ahead);
-		}
-		
-
-		//LOG
-		
-		lista_aux := []centralsim.Event(ms.ListaEventosFuera);
-		tratar_eventos(&lista_aux);
-		time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
-		fmt.Println("ID = ",C.Id);
-		fmt.Println("EVENTOS GENERADOS ",len(ms.ListaEventosFuera));
-		fmt.Println("=================")
-
-		for _,evento := range lista_aux{
-			fmt.Println("Evento Trans = ",evento.IiTransicion);
-		}
-		
-		//Enviar eventos afuera
-
-		Enviar_Eventos(&ms,[]centralsim.Event(ms.ListaEventosFuera),&C,mapa_trans,lookahead_no_token,IPs_salida);
-		var aux centralsim.EventList;
-		ms.ListaEventosFuera = aux; //vaciamos
-		fin = true;
 	}
-	
 
 	//fmt.Printf(filename,lookahead);
 	//fmt.Printf(filename,mapa_trans);
 	//fmt.Printf(filename,mapa_chan);
 }
 
-func Init(IPs []string,filename string,id int){
-	Simulador(IPs,filename,id);
+func Init(IPs []string,filename string,id int,CicloFinal int){
+	Simulador(IPs,filename,id,CicloFinal);
 	time.Sleep(1000 * time.Millisecond);
 }
 func main() {
@@ -543,12 +560,13 @@ func main() {
 	// os.Args[0] es el nombre del programa que no nos interesa
 	IPs := []string{"localhost:30000","localhost:40000","localhost:50000"};
 	subredes := "./testdata/3subredes.subred";
+	CicloFinal := 4;
 	for i,_ := range IPs{
 		filename := subredes+strconv.Itoa(i)+".json";
 		if i != len(IPs)-1 {
-			go Init(IPs,filename,i);
+			go Init(IPs,filename,i,CicloFinal);
 		}else{
-			Init(IPs,filename,i)
+			Init(IPs,filename,i,CicloFinal)
 		}
 	}
 	
