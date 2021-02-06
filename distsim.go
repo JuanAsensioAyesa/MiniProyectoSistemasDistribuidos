@@ -345,6 +345,7 @@ func Enviar_Eventos(ms*centralsim.SimulationEngine,L []centralsim.Event,C *comm_
 	var EventoAux centralsim.Event;
 	for _,event := range L{
 		ip_Destino := M[event.IiTransicion];
+		event.IsNull = false;
 		C.Send(ip_Destino,event);
 		if !esta(enviados,ip_Destino){
 			enviados = append(enviados,ip_Destino);
@@ -364,6 +365,37 @@ func Enviar_Eventos(ms*centralsim.SimulationEngine,L []centralsim.Event,C *comm_
 		}
 	}
 
+}
+/*
+	Obtiene el menor lookahead de una lista de Eventos
+*/
+func obtener_min_lookahead(L []centralsim.Event)(centralsim.TypeClock){
+	min := centralsim.TypeClock(-1);
+	if len(L) >0{ 
+		min = L[0].IiTiempo;
+		i :=1;
+		for  i < len(L){
+			if L[i].IiTiempo < min{
+				min = L[i].IiTiempo;
+			}
+			i++;
+		}
+		
+	}else{
+		fmt.Println("NO EVENTOS EN OBTENER MIN LOOKAHEAD");
+		min = -1;
+	}
+	return min;
+}
+/*
+	Trata los indices negativos de los Eventos
+*/
+func tratar_eventos(L *[]centralsim.Event){
+	for i,_ := range *L{
+		if (*L)[i].IiTransicion < 0 {
+			(*L)[i].IiTransicion = -1* ((*L)[i].IiTransicion+1);
+		}
+	}
 }
 /*
 	IPs -> slice con las IP de TODOS los procesos
@@ -437,15 +469,63 @@ func Simulador(IPs []string,filename string,id int){
 
 		Recibir_Mensajes(&C,&mapa_chan_entrada);
 		Eventos_recibidos := sacarEventos(&mapa_chan_entrada);
-		fin = true;
+		
 
-		time.Sleep(time.Duration(C.Id) * 200 * time.Millisecond);
+		//LOG
+		time.Sleep(time.Duration(C.Id) * 400 * time.Millisecond);
+		fmt.Println(C.Id);
+		fmt.Println("=======================")
 		for _,evento := range Eventos_recibidos{
 			if evento.IsNull{
 				fmt.Println("Recibido evento NULL T=",evento.IiTiempo);
+			}else{
+				fin = true;
+				fmt.Println("NO NULL T =%d Trans = %d",evento.IiTiempo,evento.IiTransicion);
 			}
 		}
+		min_ahead := obtener_min_lookahead(Eventos_recibidos);
+		max_time := centralsim.TypeClock(-1);
+		for _,evento := range Eventos_recibidos{
 
+			if !evento.IsNull{
+				//No es null,se aniade
+				if evento.IiTiempo > max_time{
+					max_time = evento.IiTiempo;
+				}
+				ms.AniadeEvento(evento);
+			}
+
+		}
+		//Simulacion local
+		if min_ahead == -1{
+			//No hay evento null
+			ms.SimularPeriodo(ms.GetLocalTime(),max_time);
+		}else{
+			//Hay que avanzar hasta el min lookahead
+			//Si no hay eventos simplemente no hara nada, solo avanzar el reloj
+			ms.SimularPeriodo(ms.GetLocalTime(),ms.GetLocalTime() + min_ahead);
+		}
+		
+
+		//LOG
+		
+		lista_aux := []centralsim.Event(ms.ListaEventosFuera);
+		tratar_eventos(&lista_aux);
+		time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
+		fmt.Println("ID = ",C.Id);
+		fmt.Println("EVENTOS GENERADOS ",len(ms.ListaEventosFuera));
+		fmt.Println("=================")
+
+		for _,evento := range lista_aux{
+			fmt.Println("Evento Trans = ",evento.IiTransicion);
+		}
+		
+		//Enviar eventos afuera
+
+		Enviar_Eventos(&ms,[]centralsim.Event(ms.ListaEventosFuera),&C,mapa_trans,lookahead_no_token,IPs_salida);
+		var aux centralsim.EventList;
+		ms.ListaEventosFuera = aux; //vaciamos
+		fin = true;
 	}
 	
 

@@ -16,13 +16,17 @@ INFO Mensaje enviado a localhost:30000
 INFO Recibida lista de 2
 1 {"1":9, "0":5, "2":5}
 INFO Mensaje enviado a localhost:50000
-1 {"1":10, "0":8, "2":5}
-INFO Recibido evento t=2 trans=0 cte=1
-1 {"1":11, "0":8, "2":9}
+1 {"1":10, "0":6, "2":9}
 INFO Recibido evento t=1 trans=0 cte=0
-1 {"1":12, "0":8, "2":9}
+1 {"1":11, "0":10, "2":9}
+INFO Recibido evento t=2 trans=0 cte=1
+1 {"1":12, "0":10, "2":9}
 INFO Mensaje enviado a localhost:30000
-1 {"1":13, "0":13, "2":9}
+1 {"1":13, "0":14, "2":9}
 INFO Recibido evento NULL t=1 trans=2
-1 {"1":14, "0":13, "2":9}
+1 {"1":14, "0":14, "2":9}
+INFO Mensaje enviado a localhost:30000
+1 {"1":15, "0":18, "2":12}
+INFO Recibido evento NULL t=6 trans=2
+1 {"1":16, "0":18, "2":12}
 INFO Mensaje enviado a localhost:30000
