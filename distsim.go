@@ -304,9 +304,65 @@ func sacarEventos(M *map[string]chan comm_vector.Msg)([]centralsim.Event){
 	var aux []centralsim.Event;
 	for _,channel := range *M{
 		msg := <-channel;
+		if msg.Evento.IiTransicion <0 {
+			msg.Evento.IiTransicion = centralsim.IndLocalTrans(-1 * (int(msg.Evento.IiTransicion) + 1));
+		}
 		aux = append(aux,msg.Evento);
 	}
 	return aux;
+
+}
+/*
+	Devuelve si una cadena esta en la lista de cadenas
+*/
+func esta(L []string ,cadena string)(bool){
+	encontrado :=false;
+	i:=0;
+	for !encontrado && i < len(L){
+		encontrado = L[i] == cadena;
+	}
+	return encontrado;
+}
+/*
+	Obtiene la transicion de entrada a partir
+	de la direccion IP de host
+*/
+func get_Trans_from_Host(M map[centralsim.IndLocalTrans]string,IP string)(centralsim.IndLocalTrans){
+	for ind_trans,IP_salida := range M{
+		if IP_salida == IP{
+			return ind_trans;
+		}
+	}
+	fmt.Println("ADVERTENCIA EN GET TRANS FROM HOST");
+	return -1;
+}
+/*
+	Envia los eventos correspondientes a las subredes de salida
+	Los eventos pueden ser null o no
+*/
+func Enviar_Eventos(ms*centralsim.SimulationEngine,L []centralsim.Event,C *comm_vector.Communicator,M map[centralsim.IndLocalTrans]string,lookahead_no_token int,salidas []string){
+	var enviados []string; //Ip de las subredes a las que se ha enviado un evento
+	var EventoAux centralsim.Event;
+	for _,event := range L{
+		ip_Destino := M[event.IiTransicion];
+		C.Send(ip_Destino,event);
+		if !esta(enviados,ip_Destino){
+			enviados = append(enviados,ip_Destino);
+		}
+	}
+	for _,IP_salida := range salidas{
+		if !esta(enviados,IP_salida){
+			//No se ha enviado evento asi que se envia Null
+			var lookahead int;
+			if ms.HaySensibilizadas(){
+				lookahead = Lookahead_Token(ms);
+			}else{
+				lookahead = lookahead_no_token;
+			}
+			EventoAux = centralsim.Event{ms.GetLocalTime() + centralsim.TypeClock(lookahead),get_Trans_from_Host(M,IP_salida),0,true};
+			C.Send(IP_salida,EventoAux);
+		}
+	}
 
 }
 /*
@@ -335,13 +391,18 @@ func Simulador(IPs []string,filename string,id int){
 	//Obtenemos los lookahead
 	//lookahead[0]->Si la subnet tiene el token
 	//lookahead[1]->Si la subnet no tiene el token
-	lookahead,mapa_trans,mapa_chan_entrada,mapa_chan_salida := obtener_Incremento_lookAhead(&ms,&C,IPs);
+	lookahead_no_token,mapa_trans,mapa_chan_entrada,mapa_chan_salida := obtener_Incremento_lookAhead(&ms,&C,IPs);
 
+	var IPs_salida []string;
+
+	for key,_ := range mapa_chan_salida{
+		IPs_salida = append(IPs_salida,key);
+	}
 
 	time.Sleep(time.Duration(C.Id) * 200 * time.Millisecond);
 	fmt.Println(C.Id);
 	fmt.Println("=====================")
-	fmt.Println("Mi lookahead cuando no tengo token: ",lookahead);
+	fmt.Println("Mi lookahead cuando no tengo token: ",lookahead_no_token);
 	for trans_id,ip := range mapa_trans{
 		fmt.Println("Transicion ",trans_id," en ",ip)
 	}
@@ -368,8 +429,22 @@ func Simulador(IPs []string,filename string,id int){
 			Simular lo correspondiente
 		
 	*/
-	Recibir_Mensajes(&C,&mapa_chan_entrada);
-	Eventos_recibidos := sacarEventos(&mapa_chan_entrada);
+	ms.ActualizaSensibilizadas(0);
+	fin :=false;
+	var recibidos []centralsim.Event;
+	Enviar_Eventos(&ms,recibidos,&C,mapa_trans,lookahead_no_token,IPs_salida);
+	for !fin{
+
+		Recibir_Mensajes(&C,&mapa_chan_entrada);
+		Eventos_recibidos := sacarEventos(&mapa_chan_entrada);
+		fin = true;
+
+		for _,evento := range Eventos_recibidos{
+			
+		}
+
+	}
+	
 
 	//fmt.Printf(filename,lookahead);
 	//fmt.Printf(filename,mapa_trans);
