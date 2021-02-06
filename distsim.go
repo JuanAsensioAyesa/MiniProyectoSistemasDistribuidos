@@ -439,8 +439,11 @@ func Simulador(IPs []string,filename string,id int){
 		Eventos_recibidos := sacarEventos(&mapa_chan_entrada);
 		fin = true;
 
+		time.Sleep(time.Duration(C.Id) * 200 * time.Millisecond);
 		for _,evento := range Eventos_recibidos{
-			
+			if evento.IsNull{
+				fmt.Println("Recibido evento NULL T=",evento.IiTiempo);
+			}
 		}
 
 	}
