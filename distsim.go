@@ -15,6 +15,7 @@ import (
 	"strings"
 	"strconv"
 	"sort"
+
 )
 /*
 	Dado una lista de transiciones devuelve un diccionario 
@@ -627,8 +628,9 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int,disparadas *[]
 		
 		//Enviar eventos afuera
 		if int(ms.GetLocalTime()) >= CicloFinal{
-			//chan_fin <-comm_vector.Msg{};
+			chan_fin <-comm_vector.Msg{};
 			fin = true;
+			C.Send(IPs[0],centralsim.Event{})
 			Enviar_Eventos(&ms,lista_aux,&C,mapa_trans,lookahead_no_token,IPs_salida,true);
 			C.Event("Decido finalizar");
 			
@@ -649,6 +651,19 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int,disparadas *[]
 		
 	}
 	*disparadas = ms.IvTransResults;
+	time.Sleep(1000 * time.Millisecond);
+	if C.Id ==0 {
+		for i:=0;i<len(IPs)-1;i++{
+			recibidas := C.Receive_Disparadas();
+			
+			for _,r := range recibidas{
+				*disparadas = append(*disparadas,r)
+			}
+		}
+	}else{
+		C.Send_Disparadas(IPs[0],*disparadas);
+		
+	}
 	C.Event("FINALIZO")
 	//fmt.Println("He terminado ",C.Id)
 
@@ -657,10 +672,17 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int,disparadas *[]
 	//fmt.Printf(filename,mapa_chan);
 }
 
-func Init(IPs []string,filename string,id int,CicloFinal int){
+func Init(IPs []string,filename string,id int,CicloFinal int)([]centralsim.ResultadoTransition){
 	var procesados []centralsim.ResultadoTransition;
 	Simulador(IPs,filename,id,CicloFinal,&procesados);
-	fmt.Println(id,procesados)
+	if id == 0 {
+		sort.Slice(procesados,func(i,j int)bool{
+			return procesados[i].ValorRelojDisparo < procesados[j].ValorRelojDisparo
+		})
+		return procesados;
+	}
+	return procesados;
+	
 	
 }
 func main() {
@@ -677,5 +699,5 @@ func main() {
 			Init(IPs,filename,i,CicloFinal)
 		}
 	}
-	time.Sleep(1000 * time.Millisecond);
+	time.Sleep(2000 * time.Millisecond);
 }
