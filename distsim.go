@@ -195,7 +195,12 @@ func obtener_Incremento_lookAhead(ms *centralsim.SimulationEngine,C *comm_vector
 		+ el maximo tiempo de las subredes de entrada
 	*/
 	max := max(L_suma);
-	lookahead:= max + TiempoTotal(lefs.IaRed_AUX);
+	var lookahead int;
+	if C.Id == 0 {
+		lookahead= max + TiempoTotal(lefs.IaRed_AUX);
+	}else{
+		lookahead = TiempoTotal(lefs.IaRed_AUX)
+	}
 	return lookahead,mapa,chan_map_entrada,chan_map_salida;
 }
 //Devuelve el menor valor del slice
@@ -498,11 +503,11 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 			Simular lo correspondiente
 		
 	*/
-	//ms.ActualizaSensibilizadas(0);
+	ms.ActualizaSensibilizadas(0);
 	fin :=false;
 	var recibidos []centralsim.Event;
 	Enviar_Eventos(&ms,recibidos,&C,mapa_trans,lookahead_no_token,IPs_salida,false);
-	
+	ms.VaciaSensibilizada();
 
 	
 	chan_fin := make(chan comm_vector.Msg,10)
@@ -519,18 +524,18 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 		
 		//LOG
 		//time.Sleep(time.Duration(C.Id) * 400 * time.Millisecond);
-		fmt.Println(C.Id);
-		fmt.Println("=======================")
-		for _,evento := range Eventos_recibidos{
+		// fmt.Println(C.Id);
+		// fmt.Println("=======================")
+		// for _,evento := range Eventos_recibidos{
 			
-			if evento.IsNull{
-				fmt.Println("Recibido evento NULL T=",evento.IiTiempo);
-			}else{
-				//fin = true;
+		// 	if evento.IsNull{
+		// 		fmt.Println("Recibido evento NULL T=",evento.IiTiempo);
+		// 	}else{
+		// 		//fin = true;
 
-				fmt.Printf("NO NULL T =%d Trans = %d Tiempo Local =%d \n",evento.IiTiempo,evento.IiTransicion,int(ms.GetLocalTime()));
-			}
-		}
+		// 		fmt.Printf("NO NULL T =%d Trans = %d Tiempo Local =%d \n",evento.IiTiempo,evento.IiTransicion,int(ms.GetLocalTime()));
+		// 	}
+		// }
 	
 		min_ahead := obtener_min_lookahead(Eventos_recibidos);
 		max_time := centralsim.TypeClock(-1);
@@ -570,7 +575,7 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 					ms.SimularPeriodo(ms.GetLocalTime(),min_time);
 					ms.TratarEventos();
 					//fmt.Println("POST",C.Id,ms.GetLocalTime());
-					ms.SimularUnpaso(min_reloj(max_time +1,centralsim.TypeClock(CicloFinal)));
+					ms.SimularUnpaso(min_reloj(max_time,centralsim.TypeClock(CicloFinal)));
 				//}
 			}else{
 				//fmt.Println("BBBBBBBBBBBBBBBBBBBBBBBB")
@@ -585,16 +590,16 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 		
 		//LOG
 		
-			lista_aux := []centralsim.Event(ms.ListaEventosFuera);
+		lista_aux := []centralsim.Event(ms.ListaEventosFuera);
 		tratar_eventos(&lista_aux);
-		//time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
-		fmt.Println("ID = ",C.Id);
-		fmt.Println("EVENTOS GENERADOS ",len(ms.ListaEventosFuera));
-		fmt.Println("=================")
+		// //time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
+		// fmt.Println("ID = ",C.Id);
+		// fmt.Println("EVENTOS GENERADOS ",len(ms.ListaEventosFuera));
+		// fmt.Println("=================")
 
-		for _,evento := range lista_aux{
-			fmt.Println("Evento Trans = ",evento.IiTransicion);
-		}
+		// for _,evento := range lista_aux{
+		// 	fmt.Println("Evento Trans = ",evento.IiTransicion);
+		// }
 		
 		//Enviar eventos afuera
 		if int(ms.GetLocalTime()) >= CicloFinal{
@@ -630,9 +635,9 @@ func Init(IPs []string,filename string,id int,CicloFinal int){
 func main() {
 	// cargamos un fichero de estructura Lef en formato json para centralizado
 	// os.Args[0] es el nombre del programa que no nos interesa
-	IPs := []string{"localhost:30000","localhost:40000","localhost:50000"};
-	subredes := "./testdata/3subredes.subred";
-	CicloFinal := 5;
+	IPs := []string{"localhost:30000","localhost:40000","localhost:50000","localhost:60000"};
+	subredes := "./testdata/red_3_3_4.rdp.subred";
+	CicloFinal := 2;
 	for i,_ := range IPs{
 		filename := subredes+strconv.Itoa(i)+".json";
 		if i != len(IPs)-1 {
