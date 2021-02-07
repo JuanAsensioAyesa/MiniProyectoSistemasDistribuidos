@@ -528,21 +528,21 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int,disparadas *[]
 		Eventos_recibidos := sacarEventos(&mapa_chan_entrada,&chan_fin,&fin);
 		
 		//LOG
-		if false && C.Id != 0{
-			time.Sleep(time.Duration(C.Id) * 400 * time.Millisecond);
-			fmt.Println(C.Id);
-			fmt.Println("=======================")
-			for _,evento := range Eventos_recibidos{
+		// if C.Id != 0{
+		// 	time.Sleep(time.Duration(C.Id) * 400 * time.Millisecond);
+		// 	fmt.Println(C.Id);
+		// 	fmt.Println("=======================")
+		// 	for _,evento := range Eventos_recibidos{
 				
-				if evento.IsNull{
-					fmt.Println("Recibido evento NULL T=",evento.IiTiempo);
-				}else{
-					//fin = true;
+		// 		if evento.IsNull{
+		// 			fmt.Printf("NULL T =%d Trans = %d Tiempo Local =%d \n",evento.IiTiempo,evento.IiTransicion,int(ms.GetLocalTime()));
+		// 		}else{
+		// 			//fin = true;
 
-					fmt.Printf("NO NULL T =%d Trans = %d Tiempo Local =%d \n",evento.IiTiempo,evento.IiTransicion,int(ms.GetLocalTime()));
-				}
-			}
-		}	
+		// 			fmt.Printf("NO NULL T =%d Trans = %d Tiempo Local =%d \n",evento.IiTiempo,evento.IiTransicion,int(ms.GetLocalTime()));
+		// 		}
+		// 	}
+		// }	
 	
 		min_ahead := obtener_min_lookahead(Eventos_recibidos);
 		max_time := centralsim.TypeClock(-1);
@@ -586,6 +586,7 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int,disparadas *[]
 					ms.TratarEventos();
 					//fmt.Println("POST",C.Id,ms.GetLocalTime());
 					//fmt.Println(ms.ComprobarSensibilizadas())
+					
 					ms.SimularUnpaso(min_reloj(max_time,centralsim.TypeClock(CicloFinal)));
 					//fmt.Println(ms.ComprobarSensibilizadas())
 				//}
@@ -598,7 +599,10 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int,disparadas *[]
 					// if C.Id ==0 {
 					// 	fmt.Println(min_ahead);
 					// }
-					ms.SimularPeriodo(ms.GetLocalTime(),min_reloj(min_ahead,centralsim.TypeClock(CicloFinal)));
+					lefs:=ms.GetLefs();
+					min_aux := min_reloj(min_ahead,centralsim.TypeClock(CicloFinal))
+					min_aux = min_reloj(min_aux,ms.GetLocalTime()+centralsim.TypeClock(TiempoTotal(lefs.IaRed_AUX)))
+					ms.SimularPeriodo(ms.GetLocalTime(),min_aux);
 				}else{
 					if C.Id != 0 {
 						acum++;
@@ -662,9 +666,9 @@ func Init(IPs []string,filename string,id int,CicloFinal int){
 func main() {
 	// cargamos un fichero de estructura Lef en formato json para centralizado
 	// os.Args[0] es el nombre del programa que no nos interesa
-	IPs := []string{"localhost:30000","localhost:40000","localhost:50000"};
-	subredes := "./testdata/red_2_2_3.rdp.subred";
-	CicloFinal := 12;
+	IPs := []string{"localhost:30000","localhost:40000","localhost:50000","localhost:60000"};
+	subredes := "./testdata/red_3_20_4.rdp.subred";
+	CicloFinal :=24;
 	for i,_ := range IPs{
 		filename := subredes+strconv.Itoa(i)+".json";
 		if i != len(IPs)-1 {
