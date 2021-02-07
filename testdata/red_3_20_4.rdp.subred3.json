@@ -1,0 +1,500 @@
+{
+  "INTERIOR": 1,
+  "EXTERIOR": 2,
+  "ia_red": [
+    {
+      "ii_idglobal": 40,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          40,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          41,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 0,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 41,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          41,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          42,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 1,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 42,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          42,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          43,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 2,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 43,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          43,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          44,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 3,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 44,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          44,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          45,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 4,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 45,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          45,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          46,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 5,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 46,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          46,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          47,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 6,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 47,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          47,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          48,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 7,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 48,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          48,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          49,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 8,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 49,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          49,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          50,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 9,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 50,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          50,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          51,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 10,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 51,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          51,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          52,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 11,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 52,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          52,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          53,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 12,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 53,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          53,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          54,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 13,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 54,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          54,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          55,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 14,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 55,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          55,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          56,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 15,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 56,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          56,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          57,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 16,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 57,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          57,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          58,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 17,
+      "ib_desalida": false
+    },
+    {
+      "ii_idglobal": 58,
+      "ii_valor": 1,
+      "ii_tiempo": 0,
+      "ii_duracion_disparo": 1,
+      "ii_listactes_IUL": [
+        [
+          58,
+          1
+        ]
+      ],
+      "ii_listactes_PUL": [
+        [
+          -2,
+          -1
+        ]
+      ],
+      "ii_vecesdisparada": 0,
+      "ii_grupoconflicto": 18,
+      "iL_tiemposhastamarca": {
+        "il_tiempos": [
+          19,
+          18,
+          17,
+          16,
+          15,
+          14,
+          13,
+          12,
+          11,
+          10,
+          9,
+          8,
+          7,
+          6,
+          5,
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      "ib_desalida": true
+    }
+  ],
+  "ii_indice": 19,
+  "is_transicionessensibilizadas": [],
+  "il_eventos": {
+    "il_milista": []
+  },
+  "il_eventosinmediatos": {
+    "il_milista": []
+  },
+  "il_eventos_exteriores": {
+    "il_milista": []
+  },
+  "il_grupos_conflicto": {
+    "il_milista": [
+      [
+        40
+      ],
+      [
+        41
+      ],
+      [
+        42
+      ],
+      [
+        43
+      ],
+      [
+        44
+      ],
+      [
+        45
+      ],
+      [
+        46
+      ],
+      [
+        47
+      ],
+      [
+        48
+      ],
+      [
+        49
+      ],
+      [
+        50
+      ],
+      [
+        51
+      ],
+      [
+        52
+      ],
+      [
+        53
+      ],
+      [
+        54
+      ],
+      [
+        55
+      ],
+      [
+        56
+      ],
+      [
+        57
+      ],
+      [
+        58
+      ]
+    ]
+  }
+}

@@ -8,37 +8,85 @@ INFO Iniciado Receive en 2
 INFO Lista enviada a localhost:30000
 2 {"2":5}
 INFO Lista enviada a localhost:40000
-2 {"2":6}
-INFO Lista enviada a localhost:60000
-2 {"2":7, "1":5}
+2 {"1":5, "2":6}
 INFO Recibida lista de 1
-2 {"2":8, "1":5}
+2 {"2":7, "1":5}
 INFO Mensaje enviado a localhost:40000
-2 {"2":9, "1":5, "0":7}
+2 {"0":6, "2":8, "1":5}
 INFO Recibida lista de 0
-2 {"2":10, "1":5, "0":7}
+2 {"2":9, "1":5, "0":6}
 INFO Mensaje enviado a localhost:30000
-2 {"2":11, "1":5, "0":7, "3":6}
-INFO Recibida lista de 3
-2 {"1":5, "0":7, "3":6, "2":12}
-INFO Mensaje enviado a localhost:60000
-2 {"2":13, "1":5, "0":7, "3":8}
-INFO Recibido evento t=2 trans=0 cte=0
-2 {"3":8, "2":14, "1":10, "0":7}
-INFO Recibido evento t=2 trans=0 cte=0
-2 {"3":8, "2":15, "1":10, "0":12}
+2 {"2":10, "1":5, "0":10}
 INFO Recibido evento t=2 trans=0 cte=1
-2 {"2":16, "1":10, "0":12, "3":8}
+2 {"2":11, "1":9, "0":10}
+INFO Recibido evento t=1 trans=0 cte=0
+2 {"2":12, "1":9, "0":10}
 INFO Mensaje enviado a localhost:30000
-2 {"2":17, "1":10, "0":20, "3":12}
-INFO Recibido evento NULL t=1 trans=4
-2 {"3":12, "2":18, "1":10, "0":20}
+2 {"1":9, "0":14, "2":13}
+INFO Recibido evento NULL t=1 trans=3
+2 {"2":14, "1":9, "0":14}
 INFO Mensaje enviado a localhost:30000
-2 {"2":19, "1":16, "0":26, "3":18}
-INFO Recibido evento t=1 trans=4 cte=-1
-2 {"0":26, "3":18, "2":20, "1":16}
+2 {"2":15, "1":12, "0":17}
+INFO Recibido evento t=1 trans=3 cte=-1
+2 {"2":16, "1":12, "0":17}
 INFO Mensaje enviado a localhost:30000
-2 {"2":21, "1":16, "0":26, "3":18}
+2 {"2":17, "1":14, "0":23}
+INFO Recibido evento NULL t=4 trans=3
+2 {"0":23, "2":18, "1":14}
+INFO Mensaje enviado a localhost:30000
+2 {"2":19, "1":18, "0":27}
+INFO Recibido evento NULL t=6 trans=3
+2 {"0":27, "2":20, "1":18}
+INFO Mensaje enviado a localhost:30000
+2 {"2":21, "1":20, "0":31}
+INFO Recibido evento NULL t=6 trans=3
+2 {"2":22, "1":20, "0":31}
+INFO Mensaje enviado a localhost:30000
+2 {"0":33, "2":23, "1":20}
+INFO Recibido evento t=4 trans=3 cte=-1
+2 {"2":24, "1":20, "0":33}
+INFO Mensaje enviado a localhost:30000
+2 {"2":25, "1":22, "0":39}
+INFO Recibido evento NULL t=7 trans=3
+2 {"2":26, "1":22, "0":39}
+INFO Mensaje enviado a localhost:30000
+2 {"0":43, "2":27, "1":26}
+INFO Recibido evento NULL t=9 trans=3
+2 {"2":28, "1":26, "0":43}
+INFO Mensaje enviado a localhost:30000
+2 {"1":28, "0":47, "2":29}
+INFO Recibido evento NULL t=9 trans=3
+2 {"2":30, "1":28, "0":47}
+INFO Mensaje enviado a localhost:30000
+2 {"2":31, "1":28, "0":49}
+INFO Recibido evento t=7 trans=3 cte=-1
+2 {"1":28, "0":49, "2":32}
+INFO Mensaje enviado a localhost:30000
+2 {"2":33, "1":30, "0":55}
+INFO Recibido evento NULL t=10 trans=3
+2 {"2":34, "1":30, "0":55}
+INFO Mensaje enviado a localhost:30000
+2 {"1":32, "0":58, "2":35}
+INFO Recibido evento NULL t=12 trans=3
+2 {"2":36, "1":32, "0":58}
+INFO Mensaje enviado a localhost:30000
+2 {"0":63, "2":37, "1":36}
+INFO Recibido evento NULL t=12 trans=3
+2 {"2":38, "1":36, "0":63}
+INFO Mensaje enviado a localhost:30000
+2 {"0":65, "2":39, "1":36}
+INFO Recibido evento t=10 trans=3 cte=-1
+2 {"2":40, "1":36, "0":65}
+INFO Mensaje enviado a localhost:30000
+2 {"2":41, "1":38, "0":71}
+INFO Recibido evento NULL t=13 trans=3
+2 {"1":38, "0":71, "2":42}
+INFO Mensaje enviado a localhost:30000
+2 {"1":40, "0":74, "2":43}
+INFO Recibido evento NULL t=15 trans=3
+2 {"2":44, "1":40, "0":74}
+INFO Mensaje enviado a localhost:30000
+2 {"1":40, "0":74, "2":45}
 INFO Decido finalizar
-2 {"2":22, "1":16, "0":26, "3":18}
+2 {"2":46, "1":40, "0":74}
 INFO FINALIZO
