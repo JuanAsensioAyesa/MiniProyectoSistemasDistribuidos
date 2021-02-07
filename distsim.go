@@ -518,7 +518,7 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 		Eventos_recibidos := sacarEventos(&mapa_chan_entrada,&chan_fin,&fin);
 		
 		//LOG
-		time.Sleep(time.Duration(C.Id) * 400 * time.Millisecond);
+		//time.Sleep(time.Duration(C.Id) * 400 * time.Millisecond);
 		fmt.Println(C.Id);
 		fmt.Println("=======================")
 		for _,evento := range Eventos_recibidos{
@@ -559,15 +559,17 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 		
 		//Simulacion local
 		if algun_End{
+			//Se simula desde el tiempo local hasta el final
 			ms.SimularPeriodo(ms.GetLocalTime(),centralsim.TypeClock(CicloFinal));
 		}else{
 			if int(min_ahead) == -1{
 				//No hay evento null
 				//if C.Id == 0 {
-					fmt.Println("PRE",C.Id,ms.GetLocalTime());
+					//fmt.Println("PRE",C.Id,ms.GetLocalTime());
+					//Se adelanta el tiempo para que se pueda lanzar la transicion
 					ms.SimularPeriodo(ms.GetLocalTime(),min_time);
 					ms.TratarEventos();
-					fmt.Println("POST",C.Id,ms.GetLocalTime());
+					//fmt.Println("POST",C.Id,ms.GetLocalTime());
 					ms.SimularUnpaso(min_reloj(max_time +1,centralsim.TypeClock(CicloFinal)));
 				//}
 			}else{
@@ -585,17 +587,18 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 		
 			lista_aux := []centralsim.Event(ms.ListaEventosFuera);
 		tratar_eventos(&lista_aux);
-		time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
+		//time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
 		fmt.Println("ID = ",C.Id);
 		fmt.Println("EVENTOS GENERADOS ",len(ms.ListaEventosFuera));
 		fmt.Println("=================")
 
-		// for _,evento := range lista_aux{
-		// 	fmt.Println("Evento Trans = ",evento.IiTransicion);
-		// }
+		for _,evento := range lista_aux{
+			fmt.Println("Evento Trans = ",evento.IiTransicion);
+		}
 		
 		//Enviar eventos afuera
 		if int(ms.GetLocalTime()) >= CicloFinal{
+
 			fin = true;
 			Enviar_Eventos(&ms,lista_aux,&C,mapa_trans,lookahead_no_token,IPs_salida,true);
 			C.Event("Decido finalizar");
@@ -629,7 +632,7 @@ func main() {
 	// os.Args[0] es el nombre del programa que no nos interesa
 	IPs := []string{"localhost:30000","localhost:40000","localhost:50000"};
 	subredes := "./testdata/3subredes.subred";
-	CicloFinal := 2;
+	CicloFinal := 5;
 	for i,_ := range IPs{
 		filename := subredes+strconv.Itoa(i)+".json";
 		if i != len(IPs)-1 {
