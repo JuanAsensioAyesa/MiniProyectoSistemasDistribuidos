@@ -10,53 +10,285 @@ INFO localhost:50000Activo
 INFO Lista enviada a localhost:40000
 0 {"0":6}
 INFO Lista enviada a localhost:50000
-0 {"0":7, "1":4}
+0 {"1":4, "0":7}
 INFO Recibida lista de 1
 0 {"0":8, "1":4}
 INFO Mensaje enviado a localhost:40000
-0 {"0":9, "1":4, "2":4}
+0 {"1":4, "2":4, "0":9}
 INFO Recibida lista de 2
 0 {"0":10, "1":4, "2":4}
 INFO Mensaje enviado a localhost:50000
-0 {"0":11, "1":7, "2":4}
+0 {"0":11, "1":4, "2":7}
 INFO Recibido evento t=1 trans=0 cte=1
-0 {"2":7, "0":12, "1":7}
+0 {"0":12, "1":7, "2":7}
 INFO Recibido evento t=1 trans=0 cte=1
-0 {"1":7, "2":7, "0":13}
+0 {"0":13, "1":7, "2":7}
 INFO Mensaje enviado a localhost:40000
 0 {"0":14, "1":7, "2":7}
 INFO Mensaje enviado a localhost:50000
-0 {"0":15, "1":12, "2":9}
+0 {"0":15, "1":9, "2":12}
 INFO Recibido evento NULL t=3 trans=0
-0 {"0":16, "1":12, "2":12}
+0 {"2":12, "0":16, "1":12}
 INFO Recibido evento NULL t=3 trans=0
 0 {"0":17, "1":12, "2":12}
-INFO Mensaje enviado a localhost:40000
-0 {"1":12, "2":12, "0":18}
 INFO Mensaje enviado a localhost:50000
-0 {"2":12, "0":19, "1":14}
-INFO Recibido evento NULL t=6 trans=0
-0 {"0":20, "1":14, "2":14}
-INFO Recibido evento NULL t=6 trans=0
-0 {"0":21, "1":14, "2":14}
+0 {"0":18, "1":14, "2":12}
+INFO Recibido evento NULL t=4 trans=0
+0 {"0":19, "1":14, "2":12}
 INFO Mensaje enviado a localhost:40000
-0 {"1":14, "2":14, "0":22}
+0 {"1":14, "2":14, "0":20}
+INFO Recibido evento NULL t=4 trans=0
+0 {"2":14, "0":21, "1":14}
 INFO Mensaje enviado a localhost:50000
-0 {"2":14, "0":23, "1":16}
+0 {"0":22, "1":14, "2":16}
 INFO Recibido evento t=2 trans=1 cte=-1
+0 {"0":23, "1":14, "2":16}
+INFO Mensaje enviado a localhost:40000
 0 {"0":24, "1":16, "2":16}
 INFO Recibido evento t=2 trans=1 cte=-1
-0 {"0":25, "1":16, "2":16}
+0 {"2":16, "0":25, "1":16}
 INFO Mensaje enviado a localhost:40000
-0 {"0":26, "1":16, "2":16}
+0 {"0":26, "1":16, "2":18}
+INFO Recibido evento NULL t=4 trans=0
+0 {"0":27, "1":16, "2":18}
 INFO Mensaje enviado a localhost:50000
-0 {"2":16, "0":27, "1":18}
-INFO Recibido evento NULL t=19 trans=0
 0 {"1":18, "2":18, "0":28}
-INFO Recibido evento NULL t=19 trans=1
+INFO Recibido evento NULL t=4 trans=1
 0 {"0":29, "1":18, "2":18}
 INFO Mensaje enviado a localhost:40000
-0 {"1":18, "2":18, "0":30}
+0 {"0":30, "1":20, "2":18}
+INFO Recibido evento t=2 trans=1 cte=-1
+0 {"2":18, "0":31, "1":20}
 INFO Mensaje enviado a localhost:50000
-0 {"1":18, "2":18, "0":31}
+0 {"2":20, "0":32, "1":20}
+INFO Recibido evento t=2 trans=1 cte=-1
+0 {"0":33, "1":20, "2":20}
+INFO Mensaje enviado a localhost:40000
+0 {"2":20, "0":34, "1":22}
+INFO Recibido evento NULL t=10 trans=0
+0 {"0":35, "1":22, "2":20}
+INFO Mensaje enviado a localhost:50000
+0 {"0":36, "1":22, "2":22}
+INFO Recibido evento NULL t=10 trans=1
+0 {"2":22, "0":37, "1":22}
+INFO Mensaje enviado a localhost:40000
+0 {"0":38, "1":24, "2":22}
+INFO Recibido evento NULL t=10 trans=0
+0 {"0":39, "1":24, "2":22}
+INFO Mensaje enviado a localhost:50000
+0 {"0":40, "1":24, "2":24}
+INFO Recibido evento NULL t=10 trans=1
+0 {"0":41, "1":24, "2":24}
+INFO Mensaje enviado a localhost:50000
+0 {"2":24, "0":42, "1":26}
+INFO Recibido evento NULL t=10 trans=0
+0 {"0":43, "1":26, "2":24}
+INFO Mensaje enviado a localhost:40000
+0 {"0":44, "1":26, "2":26}
+INFO Recibido evento NULL t=10 trans=1
+0 {"0":45, "1":26, "2":26}
+INFO Mensaje enviado a localhost:40000
+0 {"0":46, "1":26, "2":26}
+INFO Mensaje enviado a localhost:50000
+0 {"2":28, "0":47, "1":26}
+INFO Recibido evento NULL t=7 trans=0
+0 {"0":48, "1":26, "2":28}
+INFO Mensaje enviado a localhost:40000
+0 {"2":28, "0":49, "1":28}
+INFO Recibido evento NULL t=7 trans=0
+0 {"0":50, "1":28, "2":28}
+INFO Mensaje enviado a localhost:50000
+0 {"1":30, "2":28, "0":51}
+INFO Recibido evento t=5 trans=1 cte=-1
+0 {"1":30, "2":28, "0":52}
+INFO Mensaje enviado a localhost:40000
+0 {"2":30, "0":53, "1":30}
+INFO Recibido evento t=5 trans=1 cte=-1
+0 {"1":30, "2":30, "0":54}
+INFO Mensaje enviado a localhost:50000
+0 {"2":30, "0":55, "1":32}
+INFO Recibido evento NULL t=16 trans=0
+0 {"0":56, "1":32, "2":30}
+INFO Mensaje enviado a localhost:40000
+0 {"0":57, "1":32, "2":32}
+INFO Recibido evento NULL t=16 trans=0
+0 {"0":58, "1":32, "2":32}
+INFO Mensaje enviado a localhost:50000
+0 {"0":59, "1":34, "2":32}
+INFO Recibido evento NULL t=16 trans=0
+0 {"0":60, "1":34, "2":34}
+INFO Recibido evento NULL t=16 trans=0
+0 {"0":61, "1":34, "2":34}
+INFO Mensaje enviado a localhost:50000
+0 {"1":36, "2":34, "0":62}
+INFO Recibido evento NULL t=16 trans=0
+0 {"0":63, "1":36, "2":34}
+INFO Mensaje enviado a localhost:40000
+0 {"0":64, "1":36, "2":36}
+INFO Recibido evento NULL t=16 trans=0
+0 {"0":65, "1":36, "2":36}
+INFO Mensaje enviado a localhost:40000
+0 {"0":66, "1":36, "2":38}
+INFO Recibido evento NULL t=10 trans=0
+0 {"0":67, "1":36, "2":38}
+INFO Mensaje enviado a localhost:50000
+0 {"0":68, "1":38, "2":38}
+INFO Recibido evento NULL t=10 trans=0
+0 {"2":38, "0":69, "1":38}
+INFO Mensaje enviado a localhost:40000
+0 {"0":70, "1":38, "2":38}
+INFO Mensaje enviado a localhost:50000
+0 {"0":71, "1":40, "2":38}
+INFO Recibido evento t=8 trans=1 cte=-1
+0 {"0":72, "1":40, "2":38}
+INFO Mensaje enviado a localhost:40000
+0 {"0":73, "1":40, "2":40}
+INFO Recibido evento t=8 trans=1 cte=-1
+0 {"0":74, "1":42, "2":40}
+INFO Recibido evento NULL t=22 trans=0
+0 {"2":40, "0":75, "1":42}
+INFO Mensaje enviado a localhost:50000
+0 {"0":76, "1":42, "2":42}
+INFO Recibido evento NULL t=22 trans=0
+0 {"0":77, "1":42, "2":42}
+INFO Mensaje enviado a localhost:40000
+0 {"0":78, "1":44, "2":42}
+INFO Recibido evento NULL t=22 trans=0
+0 {"0":79, "1":44, "2":42}
+INFO Mensaje enviado a localhost:50000
+0 {"0":80, "1":44, "2":44}
+INFO Recibido evento NULL t=22 trans=0
+0 {"0":81, "1":44, "2":44}
+INFO Mensaje enviado a localhost:50000
+0 {"0":82, "1":46, "2":44}
+INFO Recibido evento NULL t=22 trans=0
+0 {"0":83, "1":46, "2":44}
+INFO Mensaje enviado a localhost:40000
+0 {"0":84, "1":46, "2":46}
+INFO Recibido evento NULL t=22 trans=0
+0 {"0":85, "1":46, "2":46}
+INFO Mensaje enviado a localhost:40000
+0 {"0":86, "1":46, "2":48}
+INFO Recibido evento NULL t=13 trans=0
+0 {"0":87, "1":46, "2":48}
+INFO Mensaje enviado a localhost:50000
+0 {"0":88, "1":48, "2":48}
+INFO Recibido evento NULL t=13 trans=0
+0 {"2":48, "0":89, "1":48}
+INFO Mensaje enviado a localhost:40000
+0 {"0":90, "1":50, "2":48}
+INFO Recibido evento t=11 trans=1 cte=-1
+0 {"1":50, "2":48, "0":91}
+INFO Mensaje enviado a localhost:50000
+0 {"0":92, "1":50, "2":50}
+INFO Recibido evento t=11 trans=1 cte=-1
+0 {"0":93, "1":50, "2":50}
+INFO Mensaje enviado a localhost:40000
+0 {"0":94, "1":52, "2":50}
+INFO Recibido evento NULL t=28 trans=1
+0 {"0":95, "1":52, "2":50}
+INFO Mensaje enviado a localhost:50000
+0 {"0":96, "1":52, "2":52}
+INFO Recibido evento NULL t=28 trans=0
+0 {"0":97, "1":52, "2":52}
+INFO Mensaje enviado a localhost:40000
+0 {"1":54, "2":52, "0":98}
+INFO Recibido evento NULL t=28 trans=0
+0 {"0":99, "1":54, "2":52}
+INFO Mensaje enviado a localhost:50000
+0 {"1":54, "2":54, "0":100}
+INFO Recibido evento NULL t=28 trans=0
+0 {"2":54, "0":101, "1":54}
+INFO Mensaje enviado a localhost:50000
+0 {"0":102, "1":56, "2":54}
+INFO Recibido evento NULL t=28 trans=0
+0 {"0":103, "1":56, "2":54}
+INFO Mensaje enviado a localhost:40000
+0 {"0":104, "1":56, "2":56}
+INFO Recibido evento NULL t=28 trans=1
+0 {"0":105, "1":56, "2":56}
+INFO Mensaje enviado a localhost:40000
+0 {"0":106, "1":56, "2":58}
+INFO Recibido evento NULL t=16 trans=0
+0 {"0":107, "1":56, "2":58}
+INFO Mensaje enviado a localhost:50000
+0 {"0":108, "1":58, "2":58}
+INFO Recibido evento NULL t=16 trans=0
+0 {"1":58, "2":58, "0":109}
+INFO Mensaje enviado a localhost:40000
+0 {"0":110, "1":60, "2":58}
+INFO Recibido evento t=14 trans=1 cte=-1
+0 {"2":58, "0":111, "1":60}
+INFO Mensaje enviado a localhost:50000
+0 {"0":112, "1":60, "2":60}
+INFO Recibido evento t=14 trans=1 cte=-1
+0 {"0":113, "1":60, "2":60}
+INFO Mensaje enviado a localhost:40000
+0 {"0":114, "1":62, "2":60}
+INFO Recibido evento NULL t=34 trans=0
+0 {"2":60, "0":115, "1":62}
+INFO Mensaje enviado a localhost:50000
+0 {"0":116, "1":62, "2":62}
+INFO Recibido evento NULL t=34 trans=0
+0 {"0":117, "1":62, "2":62}
+INFO Mensaje enviado a localhost:40000
+0 {"0":118, "1":64, "2":62}
+INFO Recibido evento NULL t=34 trans=1
+0 {"1":64, "2":62, "0":119}
+INFO Mensaje enviado a localhost:50000
+0 {"0":120, "1":64, "2":64}
+INFO Recibido evento NULL t=34 trans=0
+0 {"0":121, "1":64, "2":64}
+INFO Mensaje enviado a localhost:50000
+0 {"0":122, "1":66, "2":64}
+INFO Recibido evento NULL t=34 trans=0
+0 {"0":123, "1":66, "2":64}
+INFO Mensaje enviado a localhost:40000
+0 {"0":124, "1":66, "2":64}
+INFO Mensaje enviado a localhost:40000
+0 {"2":66, "0":125, "1":66}
+INFO Recibido evento NULL t=34 trans=0
+0 {"0":126, "1":66, "2":66}
+INFO Mensaje enviado a localhost:50000
+0 {"0":127, "1":66, "2":68}
+INFO Recibido evento NULL t=19 trans=0
+0 {"2":68, "0":128, "1":68}
+INFO Recibido evento NULL t=19 trans=0
+0 {"0":129, "1":68, "2":68}
+INFO Mensaje enviado a localhost:40000
+0 {"0":130, "1":70, "2":68}
+INFO Recibido evento t=17 trans=1 cte=-1
+0 {"2":68, "0":131, "1":70}
+INFO Mensaje enviado a localhost:50000
+0 {"1":70, "2":70, "0":132}
+INFO Recibido evento t=17 trans=1 cte=-1
+0 {"0":133, "1":70, "2":70}
+INFO Mensaje enviado a localhost:40000
+0 {"0":134, "1":72, "2":70}
+INFO Recibido evento NULL t=40 trans=1
+0 {"2":70, "0":135, "1":72}
+INFO Mensaje enviado a localhost:50000
+0 {"2":72, "0":136, "1":72}
+INFO Recibido evento NULL t=40 trans=1
+0 {"2":72, "0":137, "1":72}
+INFO Mensaje enviado a localhost:40000
+0 {"0":138, "1":74, "2":72}
+INFO Recibido evento NULL t=40 trans=0
+0 {"0":139, "1":74, "2":72}
+INFO Mensaje enviado a localhost:50000
+0 {"1":74, "2":74, "0":140}
+INFO Recibido evento NULL t=40 trans=0
+0 {"0":141, "1":74, "2":74}
+INFO Decido finalizar
+0 {"1":74, "2":74, "0":142}
+INFO Mensaje FIN a localhost:30000
+0 {"0":143, "1":76, "2":74}
+INFO Recibido evento NULL t=40 trans=1
+0 {"0":144, "1":76, "2":74}
+INFO Mensaje FIN a localhost:40000
+0 {"0":145, "1":76, "2":74}
+INFO Recibido mensaje de FIN
+0 {"0":146, "1":76, "2":74}
+INFO Mensaje FIN a localhost:50000
+0 {"0":147, "1":76, "2":74}
 INFO FINALIZO

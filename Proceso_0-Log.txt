@@ -12,17 +12,17 @@ INFO Lista enviada a localhost:40000
 INFO Lista enviada a localhost:50000
 0 {"0":7, "2":4}
 INFO Recibida lista de 2
-0 {"2":4, "0":8}
+0 {"0":8, "2":4}
 INFO Mensaje enviado a localhost:50000
-0 {"2":4, "1":4, "0":9}
+0 {"0":9, "2":4, "1":4}
 INFO Recibida lista de 1
 0 {"0":10, "2":4, "1":4}
 INFO Mensaje enviado a localhost:40000
-0 {"1":4, "0":11, "2":7}
+0 {"0":11, "2":4, "1":7}
 INFO Recibido evento t=1 trans=0 cte=1
 0 {"0":12, "2":7, "1":7}
 INFO Recibido evento t=1 trans=0 cte=1
-0 {"1":7, "0":13, "2":7}
+0 {"2":7, "1":7, "0":13}
 INFO Mensaje enviado a localhost:50000
 0 {"0":14, "2":7, "1":7}
 INFO Mensaje enviado a localhost:40000
@@ -31,36 +31,18 @@ INFO Recibido evento NULL t=3 trans=0
 0 {"2":12, "1":12, "0":16}
 INFO Recibido evento NULL t=3 trans=0
 0 {"0":17, "2":12, "1":12}
-INFO Mensaje enviado a localhost:40000
+INFO Mensaje FIN a localhost:50000
 0 {"0":18, "2":12, "1":12}
-INFO Mensaje enviado a localhost:50000
-0 {"1":14, "0":19, "2":12}
-INFO Recibido evento NULL t=6 trans=0
-0 {"0":20, "2":14, "1":14}
-INFO Recibido evento NULL t=6 trans=0
-0 {"0":21, "2":14, "1":14}
-INFO Mensaje enviado a localhost:50000
-0 {"2":14, "1":16, "0":22}
-INFO Recibido evento t=2 trans=1 cte=-1
-0 {"0":23, "2":14, "1":16}
-INFO Mensaje enviado a localhost:40000
-0 {"0":24, "2":14, "1":18}
-INFO Recibido evento NULL t=19 trans=0
-0 {"1":18, "0":25, "2":17}
-INFO Recibido evento t=2 trans=1 cte=-1
-0 {"1":18, "0":26, "2":17}
-INFO Mensaje enviado a localhost:40000
-0 {"0":27, "2":17, "1":18}
-INFO Mensaje enviado a localhost:50000
-0 {"0":28, "2":17, "1":20}
-INFO Recibido evento t=5 trans=1 cte=-1
-0 {"0":29, "2":19, "1":20}
-INFO Recibido evento NULL t=19 trans=0
-0 {"0":30, "2":19, "1":20}
-INFO Mensaje enviado a localhost:50000
-0 {"0":31, "2":19, "1":20}
-INFO Mensaje enviado a localhost:40000
-0 {"2":19, "1":20, "0":32}
+INFO Mensaje FIN a localhost:40000
+0 {"0":19, "2":12, "1":12}
+INFO Decido finalizar
+0 {"2":12, "1":12, "0":20}
 INFO FINALIZO
-0 {"0":33, "2":21, "1":20}
-INFO Recibido evento t=5 trans=1 cte=-1
+0 {"0":21, "2":12, "1":15}
+INFO Recibido evento NULL t=3 trans=1
+0 {"0":22, "2":15, "1":15}
+INFO Recibido evento NULL t=3 trans=0
+0 {"1":16, "0":23, "2":15}
+INFO Recibido mensaje de FIN
+0 {"1":16, "0":24, "2":16}
+INFO Recibido mensaje de FIN
