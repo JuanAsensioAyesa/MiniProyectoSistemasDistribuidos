@@ -297,9 +297,7 @@ func Recibir_Mensajes(C *comm_vector.Communicator,M *map[string]chan comm_vector
 	for !fin{
 		
 		received := C.Receive();
-		if C.Id == 0 {
-			fmt.Println("Recibido de ",received.IP)
-		}
+		
 		if received.Evento.IsEnd{
 			//fmt.Println("EEEEEEEEEEEEND")
 			fin = true;
@@ -383,8 +381,8 @@ func Enviar_Eventos(ms*centralsim.SimulationEngine,L []centralsim.Event,C *comm_
 		}
 	}
 
-	time.Sleep(time.Duration(C.Id) * 200 * time.Millisecond);
-	fmt.Println(C.Id,enviados);
+	//time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
+	//fmt.Println(C.Id,enviados);
 
 }
 /*
@@ -482,11 +480,11 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 			Simular lo correspondiente
 		
 	*/
-	//ms.ActualizaSensibilizadas(0);
+	ms.ActualizaSensibilizadas(0);
 	fin :=false;
 	var recibidos []centralsim.Event;
 	Enviar_Eventos(&ms,recibidos,&C,mapa_trans,lookahead_no_token,IPs_salida);
-	iteraciones := 4;
+	iteraciones := 2;
 	go Recibir_Mensajes(&C,&mapa_chan_entrada);
 	for iteraciones > 0 {
 		//fmt.Println("Entro ",C.Id);
@@ -494,28 +492,24 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 		
 		//time.Sleep(200 * time.Millisecond)
 		//fmt.Println("Salgo ",C.Id);
-		if true{
-			if C.Id == 0 {
-					fmt.Println("Entro Sacar");
-			}
+		if !fin{
+			
 			Eventos_recibidos := sacarEventos(&mapa_chan_entrada);
-			if C.Id == 0 {
-					fmt.Println("Salgo Sacar");
-			}
-
+			
 			//LOG
-			// time.Sleep(time.Duration(C.Id) * 400 * time.Millisecond);
-			// fmt.Println(C.Id);
-			// fmt.Println("=======================")
-			// for _,evento := range Eventos_recibidos{
+			time.Sleep(time.Duration(C.Id) * 400 * time.Millisecond);
+			fmt.Println(C.Id);
+			fmt.Println("=======================")
+			for _,evento := range Eventos_recibidos{
 				
-			// 	if evento.IsNull{
-			// 		fmt.Println("Recibido evento NULL T=",evento.IiTiempo);
-			// 	}else{
-			// 		//fin = true;
-			// 		fmt.Println("NO NULL T =%d Trans = %d",evento.IiTiempo,evento.IiTransicion);
-			// 	}
-			// }
+				if evento.IsNull{
+					fmt.Println("Recibido evento NULL T=",evento.IiTiempo);
+				}else{
+					//fin = true;
+
+					fmt.Printf("NO NULL T =%d Trans = %d Tiempo Local =%d \n",evento.IiTiempo,evento.IiTransicion,int(ms.GetLocalTime()));
+				}
+			}
 		
 			min_ahead := obtener_min_lookahead(Eventos_recibidos);
 			max_time := centralsim.TypeClock(-1);
@@ -523,16 +517,15 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 
 				if !evento.IsNull{
 					//No es null,se aniade
-					if evento.IiTiempo > max_time{
+					if evento.IiTiempo > max_time {
 						max_time = evento.IiTiempo;
 					}
+					//fmt.Println("Aniado ",C.Id);
 					ms.AniadeEvento(evento);
 				}
 
 			}
-			if C.Id == 0 {
-					fmt.Println("Entro Simular");
-			}
+			ms.TratarEventos();
 			//Simulacion local
 			if min_ahead == -1{
 				//No hay evento null
@@ -543,25 +536,22 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 				//Hay que avanzar hasta el min lookahead
 				//Si no hay eventos simplemente no hara nada, solo avanzar el reloj
 				//if C.Id == 0 {
-					ms.SimularPeriodo(ms.GetLocalTime(),ms.GetLocalTime() + min_ahead);
+					ms.SimularPeriodo(ms.GetLocalTime(),min_ahead-1);
 				//}
 			}
-			if C.Id == 0 {
-					fmt.Println("Salgo Simular");
-			}
-
+			
 			//LOG
 			
 			 lista_aux := []centralsim.Event(ms.ListaEventosFuera);
-			 tratar_eventos(&lista_aux);
-			// time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
-			// fmt.Println("ID = ",C.Id);
-			// fmt.Println("EVENTOS GENERADOS ",len(ms.ListaEventosFuera));
-			// fmt.Println("=================")
+			tratar_eventos(&lista_aux);
+			time.Sleep(time.Duration(C.Id) * 600 * time.Millisecond);
+			fmt.Println("ID = ",C.Id);
+			fmt.Println("EVENTOS GENERADOS ",len(ms.ListaEventosFuera));
+			fmt.Println("=================")
 
-			// for _,evento := range lista_aux{
-			// 	fmt.Println("Evento Trans = ",evento.IiTransicion);
-			// }
+			for _,evento := range lista_aux{
+				fmt.Println("Evento Trans = ",evento.IiTransicion);
+			}
 			
 			//Enviar eventos afuera
 			if false && int(ms.GetLocalTime()) >= CicloFinal && !fin{
@@ -577,12 +567,8 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 					}
 				}
 			}else{
-				if C.Id == 0 {
-					fmt.Println("Entro enviar");
-				}
-				Enviar_Eventos(&ms,lista_aux,&C,mapa_trans,lookahead_no_token,IPs_salida);
-				if C.Id == 0 {
-					fmt.Println("Salgo enviar");
+				if iteraciones > 1{
+					Enviar_Eventos(&ms,lista_aux,&C,mapa_trans,lookahead_no_token,IPs_salida);
 				}
 				var aux centralsim.EventList;
 				ms.ListaEventosFuera = aux; //vaciamos
@@ -591,13 +577,13 @@ func Simulador(IPs []string,filename string,id int,CicloFinal int){
 			
 		}else{
 			C.Event("Recibo mensaje de fin");
-			fmt.Println("FIN ",C.Id)
+			//fmt.Println("FIN ",C.Id)
 		}
 		iteraciones--;
-		fmt.Println(C.Id,iteraciones);
+		//fmt.Println(C.Id,iteraciones);
 	}
 	C.Event("FINALIZO")
-	fmt.Println("He terminado ",C.Id)
+	//fmt.Println("He terminado ",C.Id)
 
 	//fmt.Printf(filename,lookahead);
 	//fmt.Printf(filename,mapa_trans);
